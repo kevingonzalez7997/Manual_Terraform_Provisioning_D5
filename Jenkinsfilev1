@@ -28,8 +28,12 @@ junit 'test-reports/results.xml'
 stage ('Deploy') {
 steps {
 sh '''#!/bin/bash
-scp /var/lib/jenkins/workspace/dep5_main/setup.sh ubuntu@3.81.4.243:/home/ubuntu
-ssh -o StrictHostKeyChecking=no ubuntu@3.81.4.243 'bash -s' < /home/ubuntu/setup.sh
+scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Deployment_5_main/setup.sh ubuntu@3.81.4.243:/home/ubuntu
+ssh -o StrictHostKeyChecking=no ubuntu@3.81.4.243
+'bash -s' < /home/ubuntu/setup.sh
+
+
+
 
 '''
 }
