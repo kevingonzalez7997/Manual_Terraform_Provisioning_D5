@@ -29,7 +29,7 @@ stage ('Deploy') {
 steps {
 sh '''#!/bin/bash
 scp  /var/lib/jenkins/workspace/Deployment_5_main/setup.sh ubuntu@54.166.162.121:/home/ubuntu
-ssh ubuntu@54.166.162.121 'bash -s </home/ubuntu/setup.sh'
+ssh ubuntu@54.166.162.121 'bash -s' </home/ubuntu/setup.sh
 '''
 }
 }
