@@ -3,7 +3,7 @@ pipeline {
    stages {
     stage ('Clean') {
       steps {
-       '''#!/bin/bash
+      sh '''#!/bin/bash
 scp  /var/lib/jenkins/workspace/Deployment_5_main/pkill.sh ubuntu@54.166.162.121:/home/ubuntu
 ssh ubuntu@54.166.162.121 'bash -s </home/ubuntu/pkill.sh'
         '''
