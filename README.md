@@ -76,6 +76,13 @@ Most people use GitHub as their repository platform. The code will be pulled fro
   - Configure Jenkins Credentials Provider as needed.
 - Copy and import the Repository URL where the application source code resides.
 - Use your GitHub username and the generated key from GitHub as your credentials.
+- since there are two versions of jenkinsfile ensure that the version you are running reflects this section in the build configuration
 - Run build
+- The application should be accessible through port 8000 of the second application
+
+## TroubleShooting
+
+-Ensure an SSH connection is established before running the script portion of the deployment stage. If the connection isn't made later on, ssh will be able to be ruled out.
+-when running the setup file it will be done after ssh. This might lead to some permission errors, to avoid that run `bash -s` reads from standard input, and input redirection (`<`) provides the script to `bash` from a file.
 
 
