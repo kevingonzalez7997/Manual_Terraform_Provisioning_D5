@@ -44,7 +44,7 @@ Before Continuing ensure the necessary prerequisites are in place:
 
 ## 3. App Server Set-up
 
-The second EC2 will host the banking app. The following requirements must be installed in order to ensure the application is deployed properly.
+The second EC2 will host the banking app. The following requirements must be installed to ensure the application is deployed properly.
 
 - Install software-properties-common: `sudo apt install -y software-properties-common`
 - Add the deadsnakes repository for Python 3.7: `sudo add-apt-repository -y ppa:deadsnakes/ppa`
@@ -91,6 +91,14 @@ The application runs twice, each time with distinct configurations. In the secon
 
 3. **Multi-Branch Jenkins**: If Jenkins is not displaying any steps, particularly in a multi-branch setup, confirm that the correct version of Jenkinsfilev is selected.
 
+4. **Server Loggin**: If no password is created for Jenkins, a default might be generated. Sign out reset the password and try again.
+
 ## Obersvations
 
+- When creating a route table, terraform creates a default table. It can be referenced to the VPC attaching it to the IGW. This is more efficient than creating a routing table and then having to associate it with the subnets and gateway.
+- When an EC2 is shut down and relaunched a new public IP is associated. The private IP can be used to further streamline the pipeline. 
 
+## Optimization 
+
+
+## Conclusion 
