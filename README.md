@@ -1,27 +1,80 @@
-<p align="center">
-<img src="https://github.com/kura-labs-org/kuralabs_deployment_1/blob/main/Kuralogo.png">
-</p>
-<h1 align="center">C4_deployment-5<h1> 
+# Terraform Infrastructure (5)
+October 14, 2023
+Kevin Gonzalez
 
-Demonstrate your ability to deploy a NEW flask application to an EC2 instance.
+## Purpose
 
-- Create a separate GitHub repository for this application 
+This deployment utilizes Terraform (Infrastructure as Code) to provision the infrastructure needed to host a banking application server. To streamline processes, Jenkins is integrated for automated building and testing, and webhooks are used to trigger Jenkins. Gunicorn is the chosen application hosting solution.
 
-- Download the files from this repository and upload them to your newly created repository 
+## Deployment Steps
 
-- Be sure to follow the deployment instructions from this repository  
+### 1. Provisioning Infrastructure
 
-- Document your progress in a .md file in your repository. Also, document any issues you may run into and what you did to fix them.
+Terraform, an open-source Infrastructure as Code (IaC) tool  simplifies infrastructure management with its declarative configuration language. It supports multiple cloud providers and efficient provisioning.
 
-- Make sure your documentation includes these sections:
-  - Purpose
-  - Issues
-  - Steps
-  - System Diagram
-  - Optimization (How would make this deployment more efficient, if you utilize ChatGPT make sure to explain what your prompt was.)
+In this deployment, Terraform creates the following [resources](https://github.com/kevingonzalez7997/Terraform_D5/blob/main/main.tf):
 
-- Lastly, save your documentation and diagram into your repository. Submit your repository link to the LMS
+- 1 Virtual Private Cloud (VPC)
+- 2 Availability Zones (AZs)
+- 2 Public Subnets
+- 2 EC2 instances (Jenkins and App)
+- 1 Route Table
+- Security Group with open ports: 8080, 8000, and 22
 
-## Deployment instructions Link:
--  Link to instructions: https://github.com/kura-labs-org/c4_deployment-5/blob/main/Deployment-instructions.md
-hello
+Additionally, Terraform's capabilities are used to install [Jenkins](https://github.com/kevingonzalez7997/Jenkins_install) during the EC2 creation process.
+
+### 2. Jenkins Server Set-up
+
+Jenkins, an open-source continuous integration (CI) server, is responsible for building, testing, and deploying software projects. After installing the Jenkins server via the provisioning step, SSH keys are generated.
+
+In this deployment, the application is deployed on a separate EC2 instance (App). Jenkins, pulling source code from GitHub, transfers the required files to the App EC2.
+- Set a Jenkins server password: `sudo passwd jenkins`
+- Log in to the Jenkins server: `sudo su - jenkins -s /bin/bash`
+- Generate SSH keys: `ssh-keygen`
+- Copy the public key content and paste it into the `authorized_keys` file of the second instance.
+
+Before Continuing ensure the necessary prerequisites are in place:
+
+- Install software-properties-common: `sudo apt install -y software-properties-common`
+- Add the deadsnakes repository for Python 3.7: `sudo add-apt-repository -y ppa:deadsnakes/ppa`
+- Install Python 3.7: `sudo apt install -y python3.7`
+- Set up a Python 3.7 virtual environment: `sudo apt install -y python3.7-venv`
+
+## 3. App Server Set-up
+
+Additional prerequisites for the App server:
+
+- Install software-properties-common: `sudo apt install -y software-properties-common`
+- Add the deadsnakes repository for Python 3.7: `sudo add-apt-repository -y ppa:deadsnakes/ppa`
+- Install Python 3.7: `sudo apt install -y python3.7`
+- Set up a Python 3.7 virtual environment: `sudo apt install -y python3.7-venv`
+
+## 4. File Transfer and Execution (Jenkinsfilev1)
+
+As previously mentioned, `setup.sh` must be copied to the App server since the application won't be hosted on the Jenkins server. This step becomes part of the Jenkins pipeline, automating changes on both servers.
+
+- Copy `setup.sh` to the App server: `scp /var/lib/jenkins/workspace/Deployment_5_main/setup.sh ubuntu@AppIP:/home/ubuntu`
+- SSH into the App server and run the setup script: `ssh ubuntu@App.IP 'bash -s </home/ubuntu/setup.sh'`
+
+With the SSH connection established, `bash -s` reads from standard input, and input redirection (`<`) provides the script to `bash` from a file.
+
+## 5. File Transfer and Execution (jenkinsfilev2)
+
+The application runs twice, each time with distinct configurations. In the second Jenkins config file, a kill script is incorporated, allowing for the redeployment of new information.
+
+- Copy `setup.sh` to the App server: `scp /var/lib/jenkins/workspace/Deployment_5_main/setup.sh ubuntu@AppIP:/home/ubuntu`
+- SSH into the App server and run the setup script: `ssh ubuntu@App.IP 'bash -s </home/ubuntu/setup.sh'`
+
+- Copy `pkill.sh` to the App server: `scp /var/lib/jenkins/workspace/Deployment_5_main/pkill.sh ubuntu@AppIP:/home/ubuntu`
+- Run the pkill script on the App server: `ssh ubuntu@AppIP 'bash -s' </home/ubuntu/pkill.sh`
+
+## 5. Jenkins Pipeline
+Most people use GitHub as their repository platform. The code will be pulled from a GitHub repository that has been created as it is a more practical approach.
+
+- Create a new Jenkins item and select "Multi-branch pipeline."
+  - Configure Jenkins Credentials Provider as needed.
+- Copy and import the Repository URL where the application source code resides.
+- Use your GitHub username and the generated key from GitHub as your credentials.
+- Run build
+
+
