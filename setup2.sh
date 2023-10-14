@@ -1,5 +1,5 @@
 #!/bin/bash
-rm -rf c4_deployment-5
+rm -rf Terraform
 source test/bin/activate
 git clone https://github.com/kevingonzalez7997/Terraform_D5.git
 cd Terraform_D5
