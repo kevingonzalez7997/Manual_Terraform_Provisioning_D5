@@ -80,7 +80,27 @@ The application runs twice, each time with distinct configurations. In the secon
 
 - Copy `pkill.sh` to the App server: `scp /var/lib/jenkins/workspace/Deployment_5_main/pkill.sh ubuntu@AppIP:/home/ubuntu`
 - Run the pkill script on the App server: `ssh ubuntu@AppIP 'bash -s' </home/ubuntu/pkill.sh`
+### 7. AWS permissions
+- select the current working instance
+	- `Actions>Security>Modify IAM role>CloudWatchAgentServer Role`
+This is important as this will allow Cloudwatch to have access to the EC2 and access log files
 
+### 8. Installing CloudWatch
+Minimizing downtime is one of the main concepts for a successful application. To optimize the application from the previous build a monitor system has been implemented. Since we are using AWS, Cloudwatch was utilized to maintain the native Integration. Another pro is that, it is more cost-efficient as you only pay for the services that you need.
+
+To install run
+-`Wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb` to download the install package file
+
+-`sudo dpkg -i -E ./amazon-cloudwatch-agent.deb` to run the install package
+
+-`cd /opt/aws/amazon-cloudwatch-agent/bin/` cd into app location 
+
+-`sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard`
+This will launch the setup wizard and allow you to configure in greater detail
+
+-`/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json`
+Will launch the agent, status can be checked with:
+-`sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a status`
 
 
 ## TroubleShooting
