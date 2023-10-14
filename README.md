@@ -10,7 +10,7 @@ This deployment utilizes Terraform (Infrastructure as Code) to provision the inf
 
 ### 1. Provisioning Infrastructure
 
-Terraform, an open-source Infrastructure as Code (IaC) tool  simplifies infrastructure management with its declarative configuration language. It supports multiple cloud providers and efficient provisioning.
+Terraform, is an open-source Infrastructure as Code (IaC) tool that simplifies infrastructure management with its declarative configuration language. It supports multiple cloud providers and efficient provisioning.
 
 In this deployment, Terraform creates the following [resources](https://github.com/kevingonzalez7997/Terraform_D5/blob/main/main.tf):
 
@@ -21,9 +21,10 @@ In this deployment, Terraform creates the following [resources](https://github.c
 - 1 Route Table
 - Security Group with open ports: 8080, 8000, and 22
 
-Additionally, Terraform's capabilities are used to install [Jenkins](https://github.com/kevingonzalez7997/Jenkins_install) during the EC2 creation process.
+Additionally, Terraform's capabilities are used to install [Jenkins](https://github.com/kevingonzalez7997/Jenkins_install) during the EC2 creation process. The following command is included in the first EC2 resource block.
+- `user_data = "${file("jenkins_install_script.sh")}"`
 
-### 2. Jenkins Server Set-up
+### 2. Jenkins Server SSH
 
 Jenkins, an open-source continuous integration (CI) server, is responsible for building, testing, and deploying software projects. After installing the Jenkins server via the provisioning step, SSH keys are generated.
 
@@ -42,16 +43,16 @@ Before Continuing ensure the necessary prerequisites are in place:
 
 ## 3. App Server Set-up
 
-Additional prerequisites for the App server:
+The second EC2 will host the banking app. The following requirements must be installed in order to ensure the application is deployed properly.
 
 - Install software-properties-common: `sudo apt install -y software-properties-common`
 - Add the deadsnakes repository for Python 3.7: `sudo add-apt-repository -y ppa:deadsnakes/ppa`
 - Install Python 3.7: `sudo apt install -y python3.7`
-- Set up a Python 3.7 virtual environment: `sudo apt install -y python3.7-venv`
+- Install Python 3.7 virtual environment: `sudo apt install -y python3.7-venv`
 
 ## 4. File Transfer and Execution (Jenkinsfilev1)
 
-As previously mentioned, `setup.sh` must be copied to the App server since the application won't be hosted on the Jenkins server. This step becomes part of the Jenkins pipeline, automating changes on both servers.
+As previously mentioned, `setup.sh` must be copied to the App server since the application won't be hosted on the Jenkins server. This step becomes part of the Jenkins pipeline, automating changes on both servers. The following script was created and installed in the Jenkins
 
 - Copy `setup.sh` to the App server: `scp /var/lib/jenkins/workspace/Deployment_5_main/setup.sh ubuntu@AppIP:/home/ubuntu`
 - SSH into the App server and run the setup script: `ssh ubuntu@App.IP 'bash -s </home/ubuntu/setup.sh'`
