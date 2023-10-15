@@ -66,7 +66,7 @@ Most people use GitHub as their repository platform. The code will be pulled fro
 
 As previously mentioned, `setup.sh` must be copied to the App server since the application won't be hosted on the Jenkins server. This step becomes part of the Jenkins pipeline, automating server changes. The following script was created and installed in the Jenkins
 
-- Copy `setup.sh` to the App server: `scp /var/lib/jenkins/workspace/Deployment_5_main/setup.sh ubuntu@AppIP:/home/ubuntu` This is where the path from [Declarative: Checkout SCM]()
+- Copy `setup.sh` to the App server: `scp /var/lib/jenkins/workspace/Deployment_5_main/setup.sh ubuntu@AppIP:/home/ubuntu` This is where the path from [Declarative: Checkout SCM](https://github.com/kevingonzalez7997/Terraform_D5/blob/main/Results/SCM_Path.png)
 - SSH into the App server and run the setup script: `ssh ubuntu@App.IP 'bash -s </home/ubuntu/setup.sh'`
 
 With the SSH connection established, `bash -s` reads from standard input, and input redirection (`<`) provides the script to `bash` from a file.
@@ -106,10 +106,10 @@ Will launch the agent, status can be checked with:
 ## TroubleShooting
 1. **Establish SSH Connection**: Before initiating the deployment script, verify that an SSH connection has been successfully established. If an SSH connection isn't established, SSH issues can be ruled out as the root cause.
 
-2. **Running the "setup" File**: When executing the "setup" file, make sure it's done after establishing the SSH connection. Running it prematurely may lead to permission errors. (Optional)To avoid this, use the following command:
+2. **Running the "setup" File**: When executing the "setup" file, make sure it's done after establishing the SSH connection. Running it prematurely may lead to permission [errors](https://github.com/kevingonzalez7997/Terraform_D5/blob/main/Results/First_build.png). (Optional)To avoid this, use the following command:
 `bash -s < setup_script.sh`
 
-3. **Multi-Branch Jenkins**: If Jenkins is not displaying any steps, particularly in a multi-branch setup, confirm that the correct version of Jenkinsfilev is selected.
+3. **Multi-Branch Jenkins**: If Jenkins is not displaying any steps, particularly in a multi-branch setup, confirm that the correct version of [Jenkinsfilev](https://github.com/kevingonzalez7997/Terraform_D5/blob/main/Results/Jenkinsfile_version.png) is selected.
 
 4. **Server Loggin**: If no password is created for Jenkins, a default might be generated. Sign out reset the password and try again.
 
@@ -119,7 +119,7 @@ Will launch the agent, status can be checked with:
 - When an EC2 is shut down and relaunched a new public IP is associated. The private IP can be used to further streamline the pipeline. 
 
 ## Optimization 
-- Evaluating the deployment and resource monitoring, a potential option might be to launch a large EC2 instance. Given that there isn't significant traffic and usage remains moderate, the CPU utilization doesn't exceed 50%. This consideration aims to guarantee uninterrupted access for users.
+- Evaluating the deployment and resource monitoring, a potential option might be to launch a large EC2 instance. Given that there isn't significant traffic and usage remains moderate, the CPU utilization doesn't exceed [50%](https://github.com/kevingonzalez7997/Terraform_D5/tree/main/Results). This consideration aims to guarantee uninterrupted access for users.
 - The utilization of modules and variables could also enhance the functionality of Terraform.
 - The application is also a single point of failure and could be replicated to further increase resiliency 
 ## Conclusion 
