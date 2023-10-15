@@ -119,6 +119,7 @@ Will launch the agent, status can be checked with:
 - When an EC2 is shut down and relaunched a new public IP is associated. The private IP can be used to further streamline the pipeline. 
 
 ## Optimization 
-
-
+- Evaluating the deployment and resource monitoring, a potential option might be to launch a large EC2 instance. Given that there isn't significant traffic and usage remains moderate, the CPU utilization doesn't exceed 50%. This consideration aims to guarantee uninterrupted access for users.
+- The utilization of modules and variables could also enhance the functionality of Terraform.
+- The application is also a single point of failure and could be replicated to further increase resiliency 
 ## Conclusion 
