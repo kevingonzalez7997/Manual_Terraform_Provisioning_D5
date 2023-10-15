@@ -123,3 +123,4 @@ Will launch the agent, status can be checked with:
 - The utilization of modules and variables could also enhance the functionality of Terraform.
 - The application is also a single point of failure and could be replicated to further increase resiliency 
 ## Conclusion 
+In conclusion, this deployment employs Terraform (Infrastructure as Code) for infrastructure provisioning to host a banking application server. Jenkins is integrated for automated building and testing, with webhooks serving as triggers. Gunicorn is the selected application hosting solution. Monitoring was introduced with CloudWatch for system resource monitoring, no metric or issues were identified, confirming the deployment's robustness and stability.
