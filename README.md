@@ -3,11 +3,10 @@
 #### Kevin Gonzalez
 
 
-
 ## Purpose
 
 This deployment utilizes Terraform (Infrastructure as Code) to provision the infrastructure needed to host a banking application server. To streamline processes, Jenkins is integrated for automated building and testing, and webhooks are used to trigger Jenkins. Gunicorn is the chosen application hosting solution.
-
+![DiagramD5](Terraform_D5.png)
 ## Deployment Steps
 
 ### 1. Provisioning Infrastructure
